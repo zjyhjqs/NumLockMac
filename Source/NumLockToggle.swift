@@ -98,8 +98,7 @@ func numpadRemapping(_ numlockLedStatus: LedStatus) {
     ]
 
     let system = IOHIDEventSystemClientCreateSimpleClient(kCFAllocatorDefault)
-    let keyboardServices = (IOHIDEventSystemClientCopyServices(system)! as NSArray)
-        .map { $0 as! IOHIDServiceClient }
+    let keyboardServices = (IOHIDEventSystemClientCopyServices(system) as! [IOHIDServiceClient])
         .filter { IOHIDServiceClientConformsTo($0, UInt32(kHIDPage_GenericDesktop), UInt32(kHIDUsage_GD_Keyboard)) != 0 }
     for keyboard in keyboardServices {
         let result = IOHIDServiceClientSetProperty(
@@ -112,14 +111,12 @@ func numpadRemapping(_ numlockLedStatus: LedStatus) {
     }
 }
 
-func getNumlockLeds(_ manager: IOHIDManager, _ keyboardMatching: CFDictionary) -> [IOHIDElement] {
-    let keyboards = (IOHIDManagerCopyDevices(manager)! as NSSet)
-        .map { $0 as! IOHIDDevice }
+func getNumlockLeds(_ manager: IOHIDManager, _ keyboardMatching: CFDictionary) -> any Sequence<IOHIDElement> {
+    let keyboards = (IOHIDManagerCopyDevices(manager) as! Set<IOHIDDevice>)
         .filter { IOHIDDeviceConformsTo($0, UInt32(kHIDPage_GenericDesktop), UInt32(kHIDUsage_GD_Keyboard)) }
 
     return keyboards.compactMap({
-        (IOHIDDeviceCopyMatchingElements($0, keyboardMatching, IOOptionBits(kIOHIDOptionsTypeNone))! as NSArray)
-            .map({ $0 as! IOHIDElement })
+        (IOHIDDeviceCopyMatchingElements($0, keyboardMatching, IOOptionBits(kIOHIDOptionsTypeNone)) as! [IOHIDElement])
             .first(where: { IOHIDElementGetUsagePage($0) == kHIDPage_LEDs &&
                             IOHIDElementGetUsage($0) == kHIDUsage_LED_NumLock })
     })

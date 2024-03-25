@@ -29,8 +29,7 @@ var numlockLedStatus = LedStatus.On
 func onKeyboardAttached(context: UnsafeMutableRawPointer?, result: IOReturn, sender: UnsafeMutableRawPointer?, device: IOHIDDevice) {
     if (IOHIDDeviceConformsTo(device, UInt32(kHIDPage_GenericDesktop), UInt32(kHIDUsage_GD_Keyboard))) {
         if let numlockLed = (IOHIDDeviceCopyMatchingElements(
-            device, keyboardMatching, IOOptionBits(kIOHIDOptionsTypeNone))! as NSArray)
-            .map({ $0 as! IOHIDElement })
+            device, keyboardMatching, IOOptionBits(kIOHIDOptionsTypeNone)) as! [IOHIDElement])
             .first(where: { IOHIDElementGetUsagePage($0) == kHIDPage_LEDs &&
                             IOHIDElementGetUsage($0) == kHIDUsage_LED_NumLock })
         {
