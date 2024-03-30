@@ -128,17 +128,17 @@ func setNumlockLed(_ numlockLed: IOHIDElement, _ newStatus: LedStatus) -> ()? {
 
     let newValue = IOHIDValueCreateWithIntegerValue(kCFAllocatorDefault, numlockLed, mach_absolute_time(), newStatus.rawValue)
     let result = IOHIDDeviceSetValue(IOHIDElementGetDevice(numlockLed), numlockLed, newValue)
-    if (result == kIOReturnExclusiveAccess) {
-        print("Error when getting NumLock state: `kIOReturnExclusiveAccess`")
+    switch (result) {
+    case kIOReturnSuccess:
+        return ()
+    case kIOReturnExclusiveAccess:
+        print("Error when setting NumLock state: `kIOReturnExclusiveAccess`")
         print("Try to close `Karabiner-Elements` if opened.")
         return nil
-    }
-    else if (result != kIOReturnSuccess) {
-        print("Error when getting NumLock state: \(result)")
+    default:
+        print("Error when setting NumLock state: \(result)")
         return nil
     }
-
-    return ()
 }
 
 func setNumlock(_ manager: IOHIDManager, _ keyboardMatching: CFDictionary, _ newStatus: LedStatus) -> ()? {
