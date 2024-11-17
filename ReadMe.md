@@ -8,6 +8,10 @@ Similar to how it works on IBM compatible PCs, the NumLock key (`Clear` key on m
 
 The initial state is Number mode. Press the NumLock key (`Clear`) to toggle the state.
 
+# Notice
+
+The `F18` is used for switching the `NumLock` to prevent double switch in some apps. e.g. Windows RDP
+
 # Known issues:
 
 1. Cannot use with `Karabiner-Elements`: [Why?](https://github.com/pqrs-org/Karabiner-Elements/issues/2560#issuecomment-751698700)
@@ -15,7 +19,6 @@ The initial state is Number mode. Press the NumLock key (`Clear`) to toggle the 
 3. Attach a keyboard when the program is running sometimes may not set the NumLock to proper state. Try to toggle the NumLock key usually works well.
 4. Cannot toggle the state in situations:
     - password dialog box
-    - Microsoft Remote Desktop
     - login page
 
 # Credits
