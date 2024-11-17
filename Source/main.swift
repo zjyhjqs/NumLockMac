@@ -55,7 +55,7 @@ func onNumlock(proxy: CGEventTapProxy, type: CGEventType, event: CGEvent, refcon
 
     let keyCode = event.getIntegerValueField(.keyboardEventKeycode)
     // Seems no replacement currently
-    if (keyCode == kVK_ANSI_KeypadClear) {
+    if (keyCode == kVK_F18) {
         let result: ()? = setNumlock(manager, keyboardMatching, numlockLedStatus.toggle())
         if (result != nil)
         {

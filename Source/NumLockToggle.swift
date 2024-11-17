@@ -26,7 +26,14 @@ enum LedStatus : CFIndex {
 func numpadRemapping(_ numlockLedStatus: LedStatus) {
     // https://developer.apple.com/library/archive/technotes/tn2450/_index.html
     let mask = 0x700000000
-    let numericDisabled = [
+
+    let newNumlock = [
+        [kIOHIDKeyboardModifierMappingSrcKey: mask | kHIDUsage_KeypadNumLock,
+         kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_KeyboardF18
+        ]
+    ]
+
+    let numericDisabled = newNumlock + [
         [kIOHIDKeyboardModifierMappingSrcKey: mask | kHIDUsage_Keypad0,
          kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_KeyboardInsert
         ],
@@ -61,41 +68,7 @@ func numpadRemapping(_ numlockLedStatus: LedStatus) {
          kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_KeyboardPageUp
         ]
     ]
-    let numericEnabled = [
-        [kIOHIDKeyboardModifierMappingSrcKey: mask | kHIDUsage_Keypad0,
-         kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_Keypad0
-        ],
-        [kIOHIDKeyboardModifierMappingSrcKey: mask | kHIDUsage_KeypadPeriod,
-         kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_KeypadPeriod
-        ],
-        [kIOHIDKeyboardModifierMappingSrcKey: mask | kHIDUsage_Keypad1,
-         kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_Keypad1
-        ],
-        [kIOHIDKeyboardModifierMappingSrcKey: mask | kHIDUsage_Keypad2,
-         kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_Keypad2
-        ],
-        [kIOHIDKeyboardModifierMappingSrcKey: mask | kHIDUsage_Keypad3,
-         kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_Keypad3
-        ],
-        [kIOHIDKeyboardModifierMappingSrcKey: mask | kHIDUsage_Keypad4,
-         kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_Keypad4
-        ],
-        [kIOHIDKeyboardModifierMappingSrcKey: mask | kHIDUsage_Keypad5,
-         kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_Keypad5
-        ],
-        [kIOHIDKeyboardModifierMappingSrcKey: mask | kHIDUsage_Keypad6,
-         kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_Keypad6
-        ],
-        [kIOHIDKeyboardModifierMappingSrcKey: mask | kHIDUsage_Keypad7,
-         kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_Keypad7
-        ],
-        [kIOHIDKeyboardModifierMappingSrcKey: mask | kHIDUsage_Keypad8,
-         kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_Keypad8
-        ],
-        [kIOHIDKeyboardModifierMappingSrcKey: mask | kHIDUsage_Keypad9,
-         kIOHIDKeyboardModifierMappingDstKey: mask | kHIDUsage_Keypad9
-        ]
-    ]
+    let numericEnabled = newNumlock
 
     let system = IOHIDEventSystemClientCreateSimpleClient(kCFAllocatorDefault)
     let keyboardServices = (IOHIDEventSystemClientCopyServices(system) as! [IOHIDServiceClient])
